@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    订阅视图1 <span class="span1"></span>
+    订阅视图2 <span class="span2"></span>
+  </div>
+  <script>
+    let dep = {
+      clientList:{},
+      // 订阅
+      listen: function(key,fn){
+        (this.clientList[key] || (this.clientList[key] = [])).push(fn)
+      },
+
+      // 发布
+      trigger: function(){
+        let key = Array.prototype.shift.call(arguments),
+        fns = this.clientList[key]
+        // console.log(key)
+
+        if(!fns || fns.length === 0){
+          return false
+        }
+
+        for(let i=0,fn;fn = fns[i++];){
+          fn.apply(this,arguments)
+        }
+      }
+    }
+
+    let dataHi = function({data,tag,datakey,selector}){
+      let value = '',
+      el = document.querySelector(selector)
+
+      dep.listen(tag,function(text){
+        el.innerHTML = text
+        // console.log(text)
+      })
+
+      Object.defineProperty(data,datakey,{
+        get(){
+          console.log('获取到值')
+          return value
+        },
+        set(newValue){
+          console.log('值已被修改')
+          value = newValue
+          dep.trigger(tag,newValue)
+        }
+      })
+
+    }
+
+    let obj = {}
+
+    dataHi({
+      data:obj,
+      tag:'view-1',
+      datakey:'one',
+      selector:'.span1'
+    })
+
+    dataHi({
+      data:obj,
+      tag:'view-2',
+      datakey:'two',
+      selector:'.span2'
+    })
+
+    obj.one = '这是视图1'
+    obj.two = '这是视图2'
+  </script>
+</body>
+</html>

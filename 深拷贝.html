@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const list = {
+      name:'超级无敌暴龙战士',
+      age:99,
+      live:true,
+      hobbies: {
+        one: '打怪兽',
+        2: '跳舞',
+        3: '唱歌'
+      }
+    }
+    function deepClone(source){
+      targetList = source.constructor === Array ? [] : {}
+      for(let keys in source){
+        if(source.hasOwnProperty(keys)){
+          if(source[keys] && typeof source[keys] === 'object'){
+            targetList[keys] = source[keys].constructor === Array ? [] : {}
+            targetList[keys] = deepClone(source[keys])
+          }
+          else {
+            targetList[keys] = source[keys]
+          }
+        }
+      }
+      return targetList
+    }
+    const list2 = deepClone(list)
+    list2.name = '超级英雄'
+    list2.one = '睡觉'
+    console.log(list, list2)
+  </script>
+</body>
+</html>

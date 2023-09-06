@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    div{
+      background-color: red;
+      height: 200px;
+      width: 200px;
+    }
+  </style>
+  <input type="text">
+  <div></div>
+  <script>
+    let input = document.querySelector('input')
+    input.addEventListener('input',preventShake())
+
+    function preventShake(){
+      let timer = null
+      return () => {
+        if(timer) clearTimeout(timer)
+        timer = setTimeout(()=> {
+          console.log('发起请求')
+        },1000)
+      }
+    }
+
+    let box = document.querySelector('div')
+    box.addEventListener('mousemove',throttle())
+
+    function throttle(){
+      let timer = null
+      return () => {
+        if(!timer){
+          timer = setTimeout(() => {
+          console.log('发起请求')
+          timer = null
+        },1000)
+      }
+      }
+    }
+  </script>
+</body>
+</html>

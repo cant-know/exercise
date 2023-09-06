@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class Observer{
+      constructor(value){
+        this.value = value
+        if(Array.isArray(value)){
+          // 数组的逻辑
+        }else{
+          this.walk(value)
+        }
+      }
+
+      walk(obj){
+        const keys = Object.keys(obj)
+        for(let i = 0;i<keys.length;i++){
+          defineReactive(obj,keys[i])
+        }
+      }
+    }
+
+    function defineReactive(obj,key){
+      let val = obj[key]
+
+      if(typeof(val) === 'object'){
+        new Observer(val)
+      }
+
+      Object.defineProperty(obj,key,{
+        get(){
+          console.log(`${key}属性被读取了`)
+          return val
+        },
+        set(newVal){
+          console.log(`${key}属性的值已被修改,修改后的值为${newVal}`)
+          val = newVal
+        }
+      })
+    }
+
+    let obj = new Observer({
+      name: '正常人',
+      sex: '男',
+      hobbies: ['打游戏','读书','写代码'],
+      girlfriend: {
+        sex: '女',
+        age: 99
+      }
+    })
+
+    console.log(obj)
+  </script>
+</body>
+</html>

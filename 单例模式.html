@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Sole(name){
+      this.name = name
+      this.instance = null
+    }
+
+    Sole.getInstance = function(name){
+      if(!this.instance){
+        this.instance = new Sole(name)
+      }
+      return this.instance
+    }
+
+    const a = Sole.getInstance('a')
+    console.log(Sole.instance)
+    const b = Sole.getInstance('b')
+  </script>
+</body>
+</html>
